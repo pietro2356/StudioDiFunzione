@@ -62,13 +62,17 @@ public class StudioFx{
     }
 
     public double f(double x){
-        return  a * Math.pow(x, 3) + b * Math.pow(x, 2) + c * x + d;
+        switch (gradoFx){
+            case PRIMO -> {return a * Math.pow(x, 2);}
+            case SECONDO -> { return a * Math.pow(x, 2) + b * x + c; }
+            case TERZO -> { return  a * Math.pow(x, 3) + b * Math.pow(x, 2) + c * x + d; }
+            default -> throw new ArithmeticException();
+        }
     }
 
     public Vector CalcolaValori(){
-        int numero_di_valori_da_analizzare=(int)Math.floor(Math.abs(Piniziale-Pfinale)/Intervallo)+1;
-        datiXY = new double[numero_di_valori_da_analizzare][2];
-        Vector rootXY = new Vector();
+        //int valueAnalizzati=(int)Math.floor(Math.abs(Piniziale-Pfinale)/Intervallo)+1;
+        Vector<double[]> datiXY = new Vector();
         double x = Piniziale;
         double y = 0;
         int i = 0;
@@ -76,23 +80,68 @@ public class StudioFx{
         while (x < Pfinale){
             y = f(x);
 
-            datiXY[i][0] = x;
-            datiXY[i][1] = y;
-            
+            if (y == 0){
+                datiXY.addElement(new double[]{x, y});
+            }
+
             x += Intervallo;    
             i++;
         }
+        return datiXY;
+    }
 
-        for (double item[]: datiXY) {
+    public Vector CalcValue(){
+        Vector<double[]> point = new Vector();
+        double x = Piniziale;
+        double y = 0;
+
+        while (x < Pfinale){
+            y = f(x);
+            point.addElement(new double[]{x, y});
+
+            x += Intervallo;
+        }
+        return point;
+    }
+
+    public Vector GetRootPoint(){
+        Vector<double[]> point = CalcValue();
+        Vector<double[]> root = new Vector();
+
+        for (double[] item: point) {
             if (item[1] == 0){
-                rootXY.addElement(item);
+                root.addElement(item);
             }
         }
-        
-        return rootXY;
+
+        return root;
     }
 
 
+    private static int sign(double x) {
+        return (x < 0.0) ? -1 : (x > 0.0) ? 1 : 0;
+    }
 
+    public void GetRoot(){
+        int n = (int)Math.floor(Math.abs(Piniziale-Pfinale)/Intervallo)+1;
+        double[][] dati = new double[n][2];
+
+        double x = Piniziale, ox = x;
+        double y = f(x), oy = y;
+        int s = sign(y), os = s;
+
+        for (; x <= Pfinale ; x += Intervallo) {
+            s = sign(y = f(x));
+            if (s == 0) {
+                System.out.println(x);
+            } else if (s != os) {
+                double dx = x - ox;
+                double dy = y - oy;
+                double cx = x - dx * (y / dy);
+                System.out.println("~" + cx);
+            }
+            ox = x; oy = y; os = s;
+        }
+    }
 
 }
