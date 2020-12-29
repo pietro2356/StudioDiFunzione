@@ -32,35 +32,40 @@ public class StudioFx{
 
     /*COTRUTTORI*/
     public StudioFx(){}
-    public StudioFx(double a, double b){
-        this.a = a;
-        this.b = b;
-        this.gradoFx = Grado.PRIMO;
-    }
-    public StudioFx(double a, double b, double c){
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.gradoFx = Grado.SECONDO;
-    }
-    public StudioFx(double a, double b, double c, double d){
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
-        this.gradoFx = Grado.TERZO;
-    }
+    public StudioFx(double[] value, double[] parametri) throws Exception {
+        ///TODO: Implementare i controlli sui valori!
+        if (parametri.length == 3){
+            this.Piniziale = parametri[0];
+            this.Pfinale = parametri[1];
+            this.Intervallo = parametri[2];
+        }else { throw new Exception("Formato parametri non corretto"); }
 
-    /*METODI*/
-    public void SetParametri(double Piniziale, double Pfinale, double Intervallo){
-        this.Piniziale = Piniziale;
-        this.Pfinale = Pfinale;
-        this.Intervallo = Intervallo;
+        switch (value.length){
+            case 2 -> {
+                this.a = value[0];
+                this.b = value[1];
+                this.gradoFx = Grado.PRIMO;
+            }
+            case 3 -> {
+                this.a = value[0];
+                this.b = value[1];
+                this.c = value[2];
+                this.gradoFx = Grado.SECONDO;
+            }
+            case 4 -> {
+                this.a = value[0];
+                this.b = value[1];
+                this.c = value[2];
+                this.d = value[3];
+                this.gradoFx = Grado.TERZO;
+            }
+            default -> { throw new Exception(); }
+        }
     }
 
     public double f(double x){
         switch (gradoFx){
-            case PRIMO -> { return a * Math.pow(x, exp) + b;}
+            case PRIMO -> { return a * Math.pow(x, exp) + b; }
             case SECONDO -> { return a * Math.pow(x, exp+1) + b * x + c; }
             case TERZO -> { return  a * Math.pow(x, exp+2) + b * Math.pow(x, exp+1) + c * x + d; }
             default -> throw new ArithmeticException();
@@ -79,13 +84,14 @@ public class StudioFx{
         throw new Exception("Not implemented yet!");
     }
 
+    ///TODO: Da analizzare.
     private static int sign(double x) {
         return (x < 0.0) ? -1 : (x > 0.0) ? 1 : 0;
     }
 
-    ///Ritorna un vettore contenente gli zeri della funzione: [X1, X2, X3, ...]
-    public double[] GetRoot(){
-        double[] root = new double[n][2];
+    ///Ritorna una matrice con all'interno gli zeri: [Zero reale, Zero Approssimato]
+    public double[][] GetRoot(){
+        Vector<double[]> root = new Vector();
         int count = 0;
 
         double x = Piniziale, ox = x;
@@ -100,16 +106,13 @@ public class StudioFx{
                 double dx = x - ox;
                 double dy = y - oy;
                 double cx = x - dx * (y / dy);
-                System.out.println("X -> " + String.format("%.2f", cx));
-
-                ///TODO: Finire di convertire la matrice in vettore come seire di X: [X1, X2, X3, ...].
-                root[count][0] = Double.parseDouble(String.format("%.2f", cx).replace(",","."));
-                count++;
+                // [Numero completo, Numero approssimato]
+                root.addElement(new double[]{ox, Double.parseDouble(String.format("%.2f", cx).replace(",","."))});
             }
             ox = x; oy = y; os = s;
         }
 
-        return root;
+        return root.toArray(new double[root.size()][2]);
     }
 
     ///Ritorna una matrice con all'interno i vari punti: [x, y]
@@ -132,4 +135,9 @@ public class StudioFx{
 
         return point;
     }
+
+    ///TODO: Da implementare!!!!
+    public double[][] GetMin() throws Exception { throw new Exception("Not Implemnted yet!"); }
+    public double[][] GetMax() throws Exception { throw new Exception("Not Implemnted yet!"); }
+    public double[][] GetFlex() throws Exception { throw new Exception("Not Implemnted yet!"); }
 }
