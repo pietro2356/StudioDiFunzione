@@ -66,4 +66,3 @@ public class StudioFunzione  extends PianoCartesiano{
         super.plotFx(datiXY,g1) ;
     }
 }
-
