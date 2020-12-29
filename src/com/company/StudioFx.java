@@ -26,6 +26,8 @@ public class StudioFx{
     private Grado gradoFx;
     private double datiXY[][];
 
+    private double exp = 1;
+
 
     /*COTRUTTORI*/
     public StudioFx(){}
@@ -55,68 +57,26 @@ public class StudioFx{
         this.Intervallo = Intervallo;
     }
 
-    public double[] CalcRootoot() throws Exception {
-
-
-        throw new Exception();
-    }
-
-    public double f(double x){
+    private double f(double x){
         switch (gradoFx){
-            case PRIMO -> {return a * Math.pow(x, 2);}
-            case SECONDO -> { return a * Math.pow(x, 2) + b * x + c; }
-            case TERZO -> { return  a * Math.pow(x, 3) + b * Math.pow(x, 2) + c * x + d; }
+            case PRIMO -> { return a * Math.pow(x, exp) + b;}
+            case SECONDO -> { return a * Math.pow(x, exp+1) + b * x + c; }
+            case TERZO -> { return  a * Math.pow(x, exp+2) + b * Math.pow(x, exp+1) + c * x + d; }
+            default -> throw new ArithmeticException();
+        }
+    }
+    private double F(double x){
+        switch (gradoFx){
+            case PRIMO -> { return 1 * a * Math.pow(x, 1);}
+            case SECONDO -> { return 2 * a * Math.pow(x, 2-1) + b; }
+            case TERZO -> { return 3 * a * Math.pow(x, 3-1) + 2 * b * Math.pow(x, 2-1) + c;}
             default -> throw new ArithmeticException();
         }
     }
 
-    public Vector CalcolaValori(){
-        //int valueAnalizzati=(int)Math.floor(Math.abs(Piniziale-Pfinale)/Intervallo)+1;
-        Vector<double[]> datiXY = new Vector();
-        double x = Piniziale;
-        double y = 0;
-        int i = 0;
-
-        while (x < Pfinale){
-            y = f(x);
-
-            if (y == 0){
-                datiXY.addElement(new double[]{x, y});
-            }
-
-            x += Intervallo;    
-            i++;
-        }
-        return datiXY;
+    private void GetValueOfF() throws Exception {
+        throw new Exception("Not implemented yet!");
     }
-
-    public Vector CalcValue(){
-        Vector<double[]> point = new Vector();
-        double x = Piniziale;
-        double y = 0;
-
-        while (x < Pfinale){
-            y = f(x);
-            point.addElement(new double[]{x, y});
-
-            x += Intervallo;
-        }
-        return point;
-    }
-
-    public Vector GetRootPoint(){
-        Vector<double[]> point = CalcValue();
-        Vector<double[]> root = new Vector();
-
-        for (double[] item: point) {
-            if (item[1] == 0){
-                root.addElement(item);
-            }
-        }
-
-        return root;
-    }
-
 
     private static int sign(double x) {
         return (x < 0.0) ? -1 : (x > 0.0) ? 1 : 0;
