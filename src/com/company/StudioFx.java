@@ -1,6 +1,8 @@
 package com.company;
 
+import javax.swing.*;
 import java.lang.reflect.Array;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -24,7 +26,6 @@ public class StudioFx{
     private double c;
     private double d;
     private Grado gradoFx;
-    private double datiXY[][];
 
     private double exp = 1;
 
@@ -57,7 +58,7 @@ public class StudioFx{
         this.Intervallo = Intervallo;
     }
 
-    private double f(double x){
+    public double f(double x){
         switch (gradoFx){
             case PRIMO -> { return a * Math.pow(x, exp) + b;}
             case SECONDO -> { return a * Math.pow(x, exp+1) + b * x + c; }
@@ -65,7 +66,7 @@ public class StudioFx{
             default -> throw new ArithmeticException();
         }
     }
-    private double F(double x){
+    public double F(double x){
         switch (gradoFx){
             case PRIMO -> { return 1 * a * Math.pow(x, 1);}
             case SECONDO -> { return 2 * a * Math.pow(x, 2-1) + b; }
@@ -82,9 +83,10 @@ public class StudioFx{
         return (x < 0.0) ? -1 : (x > 0.0) ? 1 : 0;
     }
 
-    public void GetRoot(){
-        int n = (int)Math.floor(Math.abs(Piniziale-Pfinale)/Intervallo)+1;
-        double[][] dati = new double[n][2];
+    ///Ritorna un vettore contenente gli zeri della funzione: [X1, X2, X3, ...]
+    public double[] GetRoot(){
+        double[] root = new double[n][2];
+        int count = 0;
 
         double x = Piniziale, ox = x;
         double y = f(x), oy = y;
@@ -98,10 +100,36 @@ public class StudioFx{
                 double dx = x - ox;
                 double dy = y - oy;
                 double cx = x - dx * (y / dy);
-                System.out.println("~" + cx);
+                System.out.println("X -> " + String.format("%.2f", cx));
+
+                ///TODO: Finire di convertire la matrice in vettore come seire di X: [X1, X2, X3, ...].
+                root[count][0] = Double.parseDouble(String.format("%.2f", cx).replace(",","."));
+                count++;
             }
             ox = x; oy = y; os = s;
         }
+
+        return root;
     }
 
+    ///Ritorna una matrice con all'interno i vari punti: [x, y]
+    public double[][] GetPoint(){
+        int n = (int)Math.floor(Math.abs(Piniziale-Pfinale)/Intervallo)+1;
+        double[][] point = new double[n][2];
+        double x = Piniziale;
+        double y = 0;
+        int i = 0;
+
+        while (x < Pfinale){
+            y = f(x);
+
+            point[i][0] = x;
+            point[i][1] = y;
+
+            i++;
+            x += Intervallo;
+        }
+
+        return point;
+    }
 }
