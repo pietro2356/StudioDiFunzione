@@ -4,29 +4,27 @@ import java.util.Vector;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 	    System.out.println("Calcolo equazione!");
-	    double a = 1;
-	    double b = 2;
-        double c = -1;
-        //double d = 6;
+	    double[] PRIMO = new double[]{0.50, 1};
+        double[] SECONDO = new double[]{1, 5, 4};
+        double[] TERZO = new double[]{-1, 6, -11, 6};
 
-        double Piniziale = -3;
-        double Pfinale = 1;
-        double Intervallo = 0.001;
+        double[] PARAMETRI = new double[]{0, 4, 0.001};
 
-        StudioFx st = new StudioFx(a, b, c);
-        st.SetParametri(Piniziale, Pfinale, Intervallo);
+        StudioFx st = new StudioFx(TERZO, PARAMETRI);
 
-        //Vector<double[]> root = st.GetRootPoint();
+        double[][] dati =  st.GetPoint();
+        double[][] root = st.GetRoot();
 
-        st.GetRoot();
-/*
-        System.out.println("Item -> " + root.size());
-        for (double[] item: root) {
+        for (double[] item: dati) {
             System.out.println("-> (" + item[0] + "; " + item[1] + ")");
-            //System.out.println("X -> " + item);
-        }*/
+        }
+        for (double[] item: root) {
+            System.out.println("Xnorm -> " + item[0]);
+            System.out.println("Xapp -> " + item[1]);
+        }
+
 
     }
 }
