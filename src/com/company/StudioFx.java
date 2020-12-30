@@ -137,7 +137,6 @@ public class StudioFx{
     }
 
     ///TODO: Da implementare!!!!
-    public double[][] GetMin() throws Exception { throw new Exception("Not Implemnted yet!"); }
-    public double[][] GetMax() throws Exception { throw new Exception("Not Implemnted yet!"); }
+    public double[][] GetMinMax() throws Exception { throw new Exception("Not Implemnted yet!"); }
     public double[][] GetFlex() throws Exception { throw new Exception("Not Implemnted yet!"); }
 }
