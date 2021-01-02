@@ -5,29 +5,35 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class StudioFx extends PianoCartesiano{
+    //** ATTRIBUTI **//
+    //* GRAFICA *//
     private static final long serialVersionUID = 1L;
     Graphics2D g1;
+    private double minY = Double.MAX_VALUE;
+    private double maxY = Double.MIN_VALUE;
 
+    //* PARAMETRI ANALISI FUNZIONE *//
     private double Piniziale = 0;
     private double Pfinale = 4;
     private double Intervallo = 0.001;
 
+    //* PARAMETRI FUNZIONE *//
     private double a;
     private double b;
     private double c;
     private double d;
     private Grado gradoFx;
     private double exp = 1;
-
     private int nCoords;
+
+    //* MATRICI DATI FINALI *//
     private double datiXY[][];
     private double root[][];
     private double minMax[][];
     private double flex[][];
 
-    private double minY = Double.MAX_VALUE;
-    private double maxY = Double.MIN_VALUE;
 
+    //* COTRUTTORE *//
     public StudioFx(double[] value, double[] parametri)throws Exception{
         ///TODO: Implementare i controlli sui valori!
         if (parametri.length == 3){
@@ -59,6 +65,25 @@ public class StudioFx extends PianoCartesiano{
         }
     }
 
+    //* FUNZIONI MATEMATICHE *//
+    public double f(double x){
+        switch (gradoFx){
+            case PRIMO -> { return a * Math.pow(x, exp) + b; }
+            case SECONDO -> { return a * Math.pow(x, exp+1) + b * x + c; }
+            case TERZO -> { return  a * Math.pow(x, exp+2) + b * Math.pow(x, exp+1) + c * x + d; }
+            default -> throw new ArithmeticException();
+        }
+    }
+    public double F(double x){
+        switch (gradoFx){
+            case PRIMO -> { return 1 * a * Math.pow(x, 1);}
+            case SECONDO -> { return 2 * a * Math.pow(x, 2-1) + b; }
+            case TERZO -> { return 3 * a * Math.pow(x, 3-1) + 2 * b * Math.pow(x, 2-1) + c;}
+            default -> throw new ArithmeticException();
+        }
+    }
+
+    //* COSTRUTTORE FUNZIONE *//
     public void scansioneFx(){
         nCoords = (int)Math.floor(Math.abs(Piniziale - Pfinale)/ Intervallo)+1;
         datiXY = new double[nCoords][2];
@@ -85,12 +110,20 @@ public class StudioFx extends PianoCartesiano{
             setMaxY(Pfinale - Piniziale);
         else
             setMaxY(maxY - minY);
+
         GetRoot();
     }
 
+    //* SEGNO FUNZIONE *//
     private static int sign(double x) {
-        return (x < 0.0) ? -1 : (x > 0.0) ? 1 : 0; ///TODO: MODIFICARE!
+        if (x < 0.0){
+            return -1;
+        }else if (x > 0.0){
+            return 1;
+        }else{ return 0;}
     }
+
+    //* ZERI DELLA FUNZIONE *//
     public void GetRoot(){
         Vector<double[]> root = new Vector();
         int count = 0;
@@ -114,11 +147,16 @@ public class StudioFx extends PianoCartesiano{
         }
         this.root = root.toArray(new double[root.size()][2]);
     }
+    //* MINIMI E MASIMI DELLA FUNZIONE *//
+    public double[][] GetMinMax() throws Exception { throw new Exception("Not Implemnted yet!"); }
+    //* FLESSI DELLA FUNZIONE *//
+    public double[][] GetFlex() throws Exception { throw new Exception("Not Implemnted yet!"); }
 
+
+    //** PARTE DI GRAFICA **//
     public void assi(){
         super.assi(g1);
     }
-
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g1=(Graphics2D)g;
@@ -131,23 +169,6 @@ public class StudioFx extends PianoCartesiano{
             super.plotPoint(flex, Color.MAGENTA, "flex");
         }catch (NullPointerException ex){
             System.out.println("Alcune matrici sono vuote -> " + ex.getMessage());
-        }
-    }
-
-    public double f(double x){
-        switch (gradoFx){
-            case PRIMO -> { return a * Math.pow(x, exp) + b; }
-            case SECONDO -> { return a * Math.pow(x, exp+1) + b * x + c; }
-            case TERZO -> { return  a * Math.pow(x, exp+2) + b * Math.pow(x, exp+1) + c * x + d; }
-            default -> throw new ArithmeticException();
-        }
-    }
-    public double F(double x){
-        switch (gradoFx){
-            case PRIMO -> { return 1 * a * Math.pow(x, 1);}
-            case SECONDO -> { return 2 * a * Math.pow(x, 2-1) + b; }
-            case TERZO -> { return 3 * a * Math.pow(x, 3-1) + 2 * b * Math.pow(x, 2-1) + c;}
-            default -> throw new ArithmeticException();
         }
     }
     public void plotFx(){
