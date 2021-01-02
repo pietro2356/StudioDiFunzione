@@ -9,12 +9,12 @@ public class Main {
         double[] SECONDO = new double[]{4, -2, -2};
         double[] TERZO = new double[]{-1, 6, -11, 6};
         double[] TERZO2 = new double[]{6, 7, -7, -6};
-        double[] PARAMETRI = new double[]{-2, 1.1, 0.001};
+        double[] PARAMETRI = new double[]{0, 4, 0.001};
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        StudioFx s = new StudioFx(TERZO2, PARAMETRI);
+        StudioFx s = new StudioFx(TERZO, PARAMETRI);
         s.scanFx();
 
         frame.add(s);

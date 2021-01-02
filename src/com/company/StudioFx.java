@@ -65,7 +65,7 @@ public class StudioFx extends PianoCartesiano{
     }
 
     //* FUNZIONI MATEMATICHE *//
-    public double f(double x){
+    private double f(double x){
         switch (gradoFx){
             case PRIMO -> { return a * Math.pow(x, exp) + b; }
             case SECONDO -> { return a * Math.pow(x, exp+1) + b * x + c; }
@@ -73,7 +73,7 @@ public class StudioFx extends PianoCartesiano{
             default -> throw new ArithmeticException();
         }
     }
-    public double F(double x){
+    private double F(double x){
         switch (gradoFx){
             case PRIMO -> { return 1 * a * Math.pow(x, 1);}
             case SECONDO -> { return 2 * a * Math.pow(x, 2-1) + b; }
@@ -81,7 +81,7 @@ public class StudioFx extends PianoCartesiano{
             default -> throw new ArithmeticException();
         }
     }
-    public double F2(double x){
+    private double F2(double x){
         switch (gradoFx){
             case PRIMO -> { return a;}
             case SECONDO -> { return 2 * a * x; }
@@ -142,7 +142,7 @@ public class StudioFx extends PianoCartesiano{
     }
 
     //* ZERI DELLA FUNZIONE *//
-    public void GetRoot(){
+    private void GetRoot(){
         Vector<double[]> root = new Vector();
 
         double x = Piniziale;
@@ -177,7 +177,7 @@ public class StudioFx extends PianoCartesiano{
     }
 
     //* MINIMI E MASIMI DELLA FUNZIONE *//
-    public void GetMinMax() throws NullPointerException {
+    private void GetMinMax() throws NullPointerException {
         Vector<double[]> minMax = new Vector();
 
         double x = Piniziale;
@@ -213,7 +213,7 @@ public class StudioFx extends PianoCartesiano{
     }
 
     //* FLESSI DELLA FUNZIONE *//
-    public void GetFlex() throws NullPointerException {
+    private void GetFlex() throws NullPointerException {
         Vector<double[]> flex = new Vector();
 
         double x = Piniziale;
@@ -248,7 +248,7 @@ public class StudioFx extends PianoCartesiano{
     }
 
     //** PARTE DI GRAFICA **//
-    public void assi(){
+    private void assi(){
         super.assi(g1);
     }
     protected void paintComponent(Graphics g){
@@ -265,7 +265,7 @@ public class StudioFx extends PianoCartesiano{
             System.out.println("Alcune matrici sono vuote -> " + ex.getMessage());
         }
     }
-    public void plotFx(){
+    private void plotFx(){
         super.assi(g1);
         super.plotFx(datiXY,g1, Color.BLUE);
 
