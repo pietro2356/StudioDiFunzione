@@ -53,6 +53,7 @@ public class PianoCartesiano extends JPanel  {
         if (g1 == null) return;
         g1.draw(new Line2D.Double(mar - (xOrigine * scale) - 2, mar - (yOrigine * scale), mar - (xOrigine * scale) - 2,(height - mar)));
         g1.draw(new Line2D.Double(0, (height - mar) - (yOrigine * scale) - 2, (width ),(height - mar) - (yOrigine * scale) - 2));
+        g1.setPaint(Color.BLUE);
     }
 
     protected void paintComponent(Graphics g) {
@@ -63,7 +64,7 @@ public class PianoCartesiano extends JPanel  {
         height = getHeight();
         scale = (double) (height - 2.0 * mar) / getMax();
         g1.drawString(Double.toString(scale), 75, 75);
-        g1.setPaint(Color.BLUE);
+        g1.setPaint(Color.BLACK);
     }
 
 
