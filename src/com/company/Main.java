@@ -15,7 +15,7 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         StudioFx s = new StudioFx(TERZO2, PARAMETRI);
-        s.scansioneFx();
+        s.scanFx();
 
         frame.add(s);
         frame.setSize(1200,800);

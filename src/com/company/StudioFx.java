@@ -34,13 +34,12 @@ public class StudioFx extends PianoCartesiano{
 
 
     //* COTRUTTORE *//
-    public StudioFx(double[] value, double[] parametri)throws Exception{
-        ///TODO: Implementare i controlli sui valori!
+    public StudioFx(double[] value, double[] parametri) throws Exception{
         if (parametri.length == 3){
             this.Piniziale = parametri[0];
             this.Pfinale = parametri[1];
             this.Intervallo = parametri[2];
-        }else { throw new Exception("Formato parametri non corretto"); }
+        }else { throw new IllegalArgumentException("Formato parametri non corretto"); }
 
         switch (value.length){
             case 2 -> {
@@ -92,23 +91,32 @@ public class StudioFx extends PianoCartesiano{
     }
 
     //* COSTRUTTORE FUNZIONE *//
-    public void scansioneFx() throws Exception {
+    public void scanFx() throws Exception {
         nCoords = (int)Math.floor(Math.abs(Piniziale - Pfinale)/ Intervallo)+1;
         datiXY = new double[nCoords][2];
-        double x= Piniziale,y=0;
+        double x= Piniziale;
+        double y = 0;
+
         int i=0;
-        while (x <= Pfinale){
-            y = f(x);
 
-            datiXY[i][0]=x;
-            datiXY[i][1]=y;
+        //NullPointerException
+        try{
+            while (x <= Pfinale){
+                y = f(x);
 
-            if (y > maxY) { maxY = y; }
-            if (y < minY) { minY = y; }
+                datiXY[i][0]=x;
+                datiXY[i][1]=y;
 
-            x+= Intervallo;
-            i++;
+                if (y > maxY) { maxY = y; }
+                if (y < minY) { minY = y; }
+
+                x+= Intervallo;
+                i++;
+            }
+        }catch (NullPointerException ex){
+            System.err.println(ex.getMessage());
         }
+
         if (Piniziale >0)
             setxOrigine(0);
         else
@@ -136,87 +144,108 @@ public class StudioFx extends PianoCartesiano{
     //* ZERI DELLA FUNZIONE *//
     public void GetRoot(){
         Vector<double[]> root = new Vector();
-        int count = 0;
 
-        double x = Piniziale, ox = x;
-        double y = f(x), oy = y;
-        int s = sign(y), os = s;
+        double x = Piniziale;
+        double ox = x;
+        double y = f(x);
+        double oy = y;
+        int s = sign(y);
+        int os = s;
 
-        for (; x <= Pfinale ; x += Intervallo) {
-            s = sign(y = f(x));
-            if (s == 0) {
-                System.out.println(x);
-            } else if (s != os) {
-                double dx = x - ox;
-                double dy = y - oy;
-                double cx = x - dx * (y / dy);
-                // [x, y]
-                root.addElement(new double[]{
-                        Double.parseDouble(String.format("%.2f", cx).replace(",",".")),
-                        Double.parseDouble(String.format("%.2f", f(cx)).replace(",","."))
-                });
+        try{
+            for (; x <= Pfinale ; x += Intervallo) {
+                s = sign(y = f(x));
+                if (s == 0) {
+                    System.out.println(x);
+                } else if (s != os) {
+                    double dx = x - ox;
+                    double dy = y - oy;
+                    double cx = x - dx * (y / dy);
+                    // [x, y]
+                    root.addElement(new double[]{
+                            Double.parseDouble(String.format("%.2f", cx).replace(",",".")),
+                            Double.parseDouble(String.format("%.2f", f(cx)).replace(",","."))
+                    });
+                }
+                ox = x; oy = y; os = s;
             }
-            ox = x; oy = y; os = s;
+        }catch (NullPointerException ex){
+            System.err.println(ex.getMessage());
         }
+
         this.root = root.toArray(new double[root.size()][2]);
     }
 
     //* MINIMI E MASIMI DELLA FUNZIONE *//
-    public void GetMinMax() throws Exception {
+    public void GetMinMax() throws NullPointerException {
         Vector<double[]> minMax = new Vector();
-        int count = 0;
 
-        double x = Piniziale, ox = x;
-        double y = f(x), oy = y;
-        int s = sign(y), os = s;
+        double x = Piniziale;
+        double ox = x;
+        double y = f(x);
+        double oy = y;
+        int s = sign(y);
+        int os = s;
 
-        for (; x <= Pfinale ; x += Intervallo) {
-            s = sign(y = F(x));
-            if (s == 0) {
-                System.out.println(x);
-            } else if (s != os) {
-                double dx = x - ox;
-                double dy = y - oy;
-                double cx = x - dx * (y / dy);
-                // [x, y]
-                minMax.addElement(new double[]{
-                        Double.parseDouble(String.format("%.2f", cx).replace(",",".")),
-                        Double.parseDouble(String.format("%.2f", f(cx)).replace(",","."))
-                });
+        try{
+
+            for (; x <= Pfinale ; x += Intervallo) {
+                s = sign(y = F(x));
+                if (s == 0) {
+                    System.out.println(x);
+                } else if (s != os) {
+                    double dx = x - ox;
+                    double dy = y - oy;
+                    double cx = x - dx * (y / dy);
+                    // [x, y]
+                    minMax.addElement(new double[]{
+                            Double.parseDouble(String.format("%.2f", cx).replace(",",".")),
+                            Double.parseDouble(String.format("%.2f", f(cx)).replace(",","."))
+                    });
+                }
+                ox = x; oy = y; os = s;
             }
-            ox = x; oy = y; os = s;
+        }catch (NullPointerException ex){
+            System.err.println(ex.getMessage());
         }
+
         this.minMax = minMax.toArray(new double[minMax.size()][2]);
     }
 
     //* FLESSI DELLA FUNZIONE *//
-    public void GetFlex() throws Exception {
+    public void GetFlex() throws NullPointerException {
         Vector<double[]> flex = new Vector();
-        int count = 0;
 
-        double x = Piniziale, ox = x;
-        double y = F2(x), oy = y;
-        int s = sign(y), os = s;
+        double x = Piniziale;
+        double ox = x;
+        double y = f(x);
+        double oy = y;
+        int s = sign(y);
+        int os = s;
 
-        for (; x <= Pfinale ; x += Intervallo) {
-            s = sign(y = F2(x));
-            if (s == 0) {
-                System.out.println(x);
-            } else if (s != os) {
-                double dx = x - ox;
-                double dy = y - oy;
-                double cx = x - dx * (y / dy);
-                // [x, y]
-                flex.addElement(new double[]{
-                        Double.parseDouble(String.format("%.2f", cx).replace(",",".")),
-                        Double.parseDouble(String.format("%.2f", f(cx)).replace(",","."))
-                });
+        try{
+            for (; x <= Pfinale ; x += Intervallo) {
+                s = sign(y = F2(x));
+                if (s == 0) {
+                    System.out.println(x);
+                } else if (s != os) {
+                    double dx = x - ox;
+                    double dy = y - oy;
+                    double cx = x - dx * (y / dy);
+                    // [x, y]
+                    flex.addElement(new double[]{
+                            Double.parseDouble(String.format("%.2f", cx).replace(",",".")),
+                            Double.parseDouble(String.format("%.2f", f(cx)).replace(",","."))
+                    });
+                }
+                ox = x; oy = y; os = s;
             }
-            ox = x; oy = y; os = s;
+        }catch (NullPointerException ex){
+            System.err.println(ex.getMessage());
         }
+
         this.flex = flex.toArray(new double[flex.size()][2]);
     }
-
 
     //** PARTE DI GRAFICA **//
     public void assi(){
@@ -226,7 +255,7 @@ public class StudioFx extends PianoCartesiano{
         super.paintComponent(g);
         g1=(Graphics2D)g;
         super.assi(g1);
-        super.plotFx(datiXY,g1);
+        super.plotFx(datiXY,g1, Color.BLUE);
 
         try{
             super.plotPoint(root, Color.RED, "root");
@@ -238,7 +267,7 @@ public class StudioFx extends PianoCartesiano{
     }
     public void plotFx(){
         super.assi(g1);
-        super.plotFx(datiXY,g1) ;
+        super.plotFx(datiXY,g1, Color.BLUE);
 
         try{
             super.plotPoint(root, Color.RED, "root");

@@ -70,15 +70,14 @@ public class PianoCartesiano extends JPanel  {
         g1.setBackground(new java.awt.Color(238, 238, 238));
     }
 
-
-    public void plotFx(double datiXY[][], Graphics2D g1) {
+    public void plotFx(double datiXY[][], Graphics2D g1, Color color) {
+        g1.setPaint(color);
         if (g1 == null) return;
         for (int i = 0; i < datiXY.length - 1; i++) {
             double x1 = mar - (xOrigine * scale) + datiXY[i][0] * scale;
             double y1 = (height - mar) - (yOrigine * scale) - scale * datiXY[i][1];
             double x2 = mar - (xOrigine * scale) + datiXY[i + 1][0] * scale;
             double y2 = (height - mar) - (yOrigine * scale) - scale * datiXY[i + 1][1];
-            // g1.fill(new Ellipse2D.Double(x1-2,y1-2,1,1));
             g1.draw(new Line2D.Double(x1, y1, x2, y2));
         }
     }
@@ -94,8 +93,7 @@ public class PianoCartesiano extends JPanel  {
 
                 System.out.println("P(" + x1 + ", " + y1 + ");");
             }
-        }else
-        {
+        }else {
             throw new NullPointerException("Dati non corretti!");
         }
     }
