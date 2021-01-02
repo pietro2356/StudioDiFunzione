@@ -1,6 +1,8 @@
 package com.company;
 
 import java.awt.*;
+import java.io.IOException;
+import java.util.Vector;
 
 public class StudioFx extends PianoCartesiano{
     private static final long serialVersionUID = 1L;
@@ -19,6 +21,9 @@ public class StudioFx extends PianoCartesiano{
 
     private int nCoords;
     private double datiXY[][];
+    private double root[][];
+    private double minMax[][];
+    private double flex[][];
 
     private double minY = Double.MAX_VALUE;
     private double maxY = Double.MIN_VALUE;
@@ -80,16 +85,53 @@ public class StudioFx extends PianoCartesiano{
             setMaxY(Pfinale - Piniziale);
         else
             setMaxY(maxY - minY);
+        GetRoot();
+    }
+
+    private static int sign(double x) {
+        return (x < 0.0) ? -1 : (x > 0.0) ? 1 : 0; ///TODO: MODIFICARE!
+    }
+    public void GetRoot(){
+        Vector<double[]> root = new Vector();
+        int count = 0;
+
+        double x = Piniziale, ox = x;
+        double y = f(x), oy = y;
+        int s = sign(y), os = s;
+
+        for (; x <= Pfinale ; x += Intervallo) {
+            s = sign(y = f(x));
+            if (s == 0) {
+                System.out.println(x);
+            } else if (s != os) {
+                double dx = x - ox;
+                double dy = y - oy;
+                double cx = x - dx * (y / dy);
+                // [x, y]
+                root.addElement(new double[]{Double.parseDouble(String.format("%.2f", cx).replace(",",".")), 0});
+            }
+            ox = x; oy = y; os = s;
+        }
+        this.root = root.toArray(new double[root.size()][2]);
     }
 
     public void assi(){
         super.assi(g1);
     }
+
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g1=(Graphics2D)g;
         super.assi(g1);
-        super.plotFx(datiXY,g1) ;
+        super.plotFx(datiXY,g1);
+
+        try{
+            super.plotPoint(root, Color.RED, "root");
+            super.plotPoint(minMax, Color.GREEN, "minmax");
+            super.plotPoint(flex, Color.MAGENTA, "flex");
+        }catch (NullPointerException ex){
+            System.out.println("Alcune matrici sono vuote -> " + ex.getMessage());
+        }
     }
 
     public double f(double x){
@@ -111,5 +153,13 @@ public class StudioFx extends PianoCartesiano{
     public void plotFx(){
         super.assi(g1);
         super.plotFx(datiXY,g1) ;
+
+        try{
+            super.plotPoint(root, Color.RED, "root");
+            super.plotPoint(minMax, Color.GREEN, "minmax");
+            super.plotPoint(flex, Color.MAGENTA, "flex");
+        }catch (NullPointerException ex){
+            System.out.println("Alcune matrici sono vuote -> " + ex.getMessage());
+        }
     }
 }

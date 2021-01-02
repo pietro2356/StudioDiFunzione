@@ -54,7 +54,7 @@ public class StudioFunzione  extends PianoCartesiano{
         super.paintComponent(g);
         g1=(Graphics2D)g;
         super.assi(g1);
-        super.plotFx(datiXY,g1) ;
+        //super.plotFx(datiXY,g1) ;
     }
     private double f(double x){
         return Math.pow(x, 2);
@@ -63,6 +63,6 @@ public class StudioFunzione  extends PianoCartesiano{
     }
     public void plotFx(){
         super.assi(g1);
-        super.plotFx(datiXY,g1) ;
+        //super.plotFx(datiXY,g1) ;
     }
 }
