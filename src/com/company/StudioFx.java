@@ -84,7 +84,7 @@ public class StudioFx extends PianoCartesiano{
     }
 
     //* COSTRUTTORE FUNZIONE *//
-    public void scansioneFx(){
+    public void scansioneFx() throws Exception {
         nCoords = (int)Math.floor(Math.abs(Piniziale - Pfinale)/ Intervallo)+1;
         datiXY = new double[nCoords][2];
         double x= Piniziale,y=0;
@@ -112,6 +112,7 @@ public class StudioFx extends PianoCartesiano{
             setMaxY(maxY - minY);
 
         GetRoot();
+        GetMinMax();
     }
 
     //* SEGNO FUNZIONE *//
@@ -147,8 +148,36 @@ public class StudioFx extends PianoCartesiano{
         }
         this.root = root.toArray(new double[root.size()][2]);
     }
+
     //* MINIMI E MASIMI DELLA FUNZIONE *//
-    public double[][] GetMinMax() throws Exception { throw new Exception("Not Implemnted yet!"); }
+    public void GetMinMax() throws Exception {
+        Vector<double[]> minMax = new Vector();
+        int count = 0;
+
+        double x = Piniziale, ox = x;
+        double y = f(x), oy = y;
+        int s = sign(y), os = s;
+
+        for (; x <= Pfinale ; x += Intervallo) {
+            s = sign(y = F(x));
+            if (s == 0) {
+                System.out.println(x);
+            } else if (s != os) {
+                double dx = x - ox;
+                double dy = y - oy;
+                double cx = x - dx * (y / dy);
+                // [x, y]
+                minMax.addElement(new double[]{
+                        Double.parseDouble(String.format("%.2f", cx).replace(",",".")),
+                        Double.parseDouble(String.format("%.2f", f(cx)).replace(",","."))
+                });
+            }
+            ox = x; oy = y; os = s;
+        }
+        this.minMax = minMax.toArray(new double[minMax.size()][2]);
+    }
+
+
     //* FLESSI DELLA FUNZIONE *//
     public double[][] GetFlex() throws Exception { throw new Exception("Not Implemnted yet!"); }
 
@@ -165,7 +194,7 @@ public class StudioFx extends PianoCartesiano{
 
         try{
             super.plotPoint(root, Color.RED, "root");
-            super.plotPoint(minMax, Color.GREEN, "minmax");
+            super.plotPoint(minMax, Color.ORANGE, "mM");
             super.plotPoint(flex, Color.MAGENTA, "flex");
         }catch (NullPointerException ex){
             System.out.println("Alcune matrici sono vuote -> " + ex.getMessage());
@@ -177,7 +206,7 @@ public class StudioFx extends PianoCartesiano{
 
         try{
             super.plotPoint(root, Color.RED, "root");
-            super.plotPoint(minMax, Color.GREEN, "minmax");
+            super.plotPoint(minMax, Color.ORANGE, "mM");
             super.plotPoint(flex, Color.MAGENTA, "flex");
         }catch (NullPointerException ex){
             System.out.println("Alcune matrici sono vuote -> " + ex.getMessage());

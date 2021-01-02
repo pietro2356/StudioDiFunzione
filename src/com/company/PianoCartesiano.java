@@ -67,6 +67,7 @@ public class PianoCartesiano extends JPanel  {
         scale = (double) (height - 2.0 * mar) / getMax();
         g1.drawString(Double.toString(scale), 75, 75);
         g1.setPaint(Color.BLACK);
+        g1.setBackground(new java.awt.Color(238, 238, 238));
     }
 
 
@@ -86,7 +87,7 @@ public class PianoCartesiano extends JPanel  {
         if (point.length != 0){
             for (int i = 0; i <= point.length - 1; i++){
                 int x1 = (int)(mar - (xOrigine * scale) + point[i][0] * scale);
-                int y1 = (int)((height - mar) - (yOrigine * scale));
+                int y1 = (int)((height - mar) - (yOrigine * scale) - scale * point[i][1]);
 
                 g1.fillOval(x1, y1,4, 4);
                 g1.drawString(label + (i+1) +"(" + point[i][0] + ", " + point[i][1] + ");", x1 + 5, y1 + 15);
