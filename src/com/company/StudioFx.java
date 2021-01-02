@@ -1,38 +1,40 @@
 package com.company;
 
-import javax.swing.*;
-import java.lang.reflect.Array;
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
+import java.awt.*;
+import java.io.IOException;
 import java.util.Vector;
 
-public class StudioFx{
-    /*
-        - Parametrizzare a, b, h [Piniziale, Pfinale, Intervallo]
-        - Metodi studio funzione:
-            - Radici di f(x) - tan -> []
-            - Min e Max.
-            - Punti di flesso.
-            - Grafico
-        - Calcolo tutti i punti tra a e b con intervallo h.
-     */
+public class StudioFx extends PianoCartesiano{
+    //** ATTRIBUTI **//
+    //* GRAFICA *//
+    private static final long serialVersionUID = 1L;
+    Graphics2D g1;
+    private double minY = Double.MAX_VALUE;
+    private double maxY = Double.MIN_VALUE;
 
-    /*ATRIBUTI*/
-    private double Piniziale;
-    private double Pfinale;
-    private double Intervallo;
+    //* PARAMETRI ANALISI FUNZIONE *//
+    private double Piniziale = 0;
+    private double Pfinale = 4;
+    private double Intervallo = 0.001;
+
+    //* PARAMETRI FUNZIONE *//
     private double a;
     private double b;
     private double c;
     private double d;
     private Grado gradoFx;
-
     private double exp = 1;
+    private int nCoords;
+
+    //* MATRICI DATI FINALI *//
+    private double datiXY[][];
+    private double root[][];
+    private double minMax[][];
+    private double flex[][];
 
 
-    /*COTRUTTORI*/
-    public StudioFx(){}
-    public StudioFx(double[] value, double[] parametri) throws Exception {
+    //* COTRUTTORE *//
+    public StudioFx(double[] value, double[] parametri)throws Exception{
         ///TODO: Implementare i controlli sui valori!
         if (parametri.length == 3){
             this.Piniziale = parametri[0];
@@ -63,6 +65,7 @@ public class StudioFx{
         }
     }
 
+    //* FUNZIONI MATEMATICHE *//
     public double f(double x){
         switch (gradoFx){
             case PRIMO -> { return a * Math.pow(x, exp) + b; }
@@ -80,17 +83,48 @@ public class StudioFx{
         }
     }
 
-    private void GetValueOfF() throws Exception {
-        throw new Exception("Not implemented yet!");
+    //* COSTRUTTORE FUNZIONE *//
+    public void scansioneFx(){
+        nCoords = (int)Math.floor(Math.abs(Piniziale - Pfinale)/ Intervallo)+1;
+        datiXY = new double[nCoords][2];
+        double x= Piniziale,y=0;
+        int i=0;
+        while (x <= Pfinale){
+            y = f(x);
+
+            datiXY[i][0]=x;
+            datiXY[i][1]=y;
+
+            if (y > maxY) { maxY = y; }
+            if (y < minY) { minY = y; }
+
+            x+= Intervallo;
+            i++;
+        }
+        if (Piniziale >0)
+            setxOrigine(0);
+        else
+            setxOrigine(Piniziale);
+            setyOrigine(Math.abs((maxY-minY)) / 2.0);
+        if ((Pfinale - Piniziale) > (maxY-minY))
+            setMaxY(Pfinale - Piniziale);
+        else
+            setMaxY(maxY - minY);
+
+        GetRoot();
     }
 
-    ///TODO: Da analizzare.
+    //* SEGNO FUNZIONE *//
     private static int sign(double x) {
-        return (x < 0.0) ? -1 : (x > 0.0) ? 1 : 0;
+        if (x < 0.0){
+            return -1;
+        }else if (x > 0.0){
+            return 1;
+        }else{ return 0;}
     }
 
-    ///Ritorna una matrice con all'interno gli zeri: [Zero reale, Zero Approssimato]
-    public double[][] GetRoot(){
+    //* ZERI DELLA FUNZIONE *//
+    public void GetRoot(){
         Vector<double[]> root = new Vector();
         int count = 0;
 
@@ -106,37 +140,47 @@ public class StudioFx{
                 double dx = x - ox;
                 double dy = y - oy;
                 double cx = x - dx * (y / dy);
-                // [Numero completo, Numero approssimato]
-                root.addElement(new double[]{ox, Double.parseDouble(String.format("%.2f", cx).replace(",","."))});
+                // [x, y]
+                root.addElement(new double[]{Double.parseDouble(String.format("%.2f", cx).replace(",",".")), 0});
             }
             ox = x; oy = y; os = s;
         }
-
-        return root.toArray(new double[root.size()][2]);
+        this.root = root.toArray(new double[root.size()][2]);
     }
-
-    ///Ritorna una matrice con all'interno i vari punti: [x, y]
-    public double[][] GetPoint(){
-        int n = (int)Math.floor(Math.abs(Piniziale-Pfinale)/Intervallo)+1;
-        double[][] point = new double[n][2];
-        double x = Piniziale;
-        double y = 0;
-        int i = 0;
-
-        while (x < Pfinale){
-            y = f(x);
-
-            point[i][0] = x;
-            point[i][1] = y;
-
-            i++;
-            x += Intervallo;
-        }
-
-        return point;
-    }
-
-    ///TODO: Da implementare!!!!
+    //* MINIMI E MASIMI DELLA FUNZIONE *//
     public double[][] GetMinMax() throws Exception { throw new Exception("Not Implemnted yet!"); }
+    //* FLESSI DELLA FUNZIONE *//
     public double[][] GetFlex() throws Exception { throw new Exception("Not Implemnted yet!"); }
+
+
+    //** PARTE DI GRAFICA **//
+    public void assi(){
+        super.assi(g1);
+    }
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g1=(Graphics2D)g;
+        super.assi(g1);
+        super.plotFx(datiXY,g1);
+
+        try{
+            super.plotPoint(root, Color.RED, "root");
+            super.plotPoint(minMax, Color.GREEN, "minmax");
+            super.plotPoint(flex, Color.MAGENTA, "flex");
+        }catch (NullPointerException ex){
+            System.out.println("Alcune matrici sono vuote -> " + ex.getMessage());
+        }
+    }
+    public void plotFx(){
+        super.assi(g1);
+        super.plotFx(datiXY,g1) ;
+
+        try{
+            super.plotPoint(root, Color.RED, "root");
+            super.plotPoint(minMax, Color.GREEN, "minmax");
+            super.plotPoint(flex, Color.MAGENTA, "flex");
+        }catch (NullPointerException ex){
+            System.out.println("Alcune matrici sono vuote -> " + ex.getMessage());
+        }
+    }
 }

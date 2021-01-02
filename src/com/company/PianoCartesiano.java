@@ -12,6 +12,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.io.Console;
+import java.io.IOException;
 
 public class PianoCartesiano extends JPanel  {
 
@@ -51,8 +53,9 @@ public class PianoCartesiano extends JPanel  {
 
     public void assi(Graphics2D g1) {
         if (g1 == null) return;
-        g1.draw(new Line2D.Double(mar - (xOrigine * scale) - 2, mar - (yOrigine * scale), mar - (xOrigine * scale) - 2,(height - mar)));
-        g1.draw(new Line2D.Double(0, (height - mar) - (yOrigine * scale) - 2, (width ),(height - mar) - (yOrigine * scale) - 2));
+        g1.draw(new Line2D.Double(mar - (xOrigine * scale) - 2, mar - (yOrigine * scale), mar - (xOrigine * scale) - 2,(height - mar))); //ASSE Y
+        g1.draw(new Line2D.Double(0, (height - mar) - (yOrigine * scale) - 2, (width ),(height - mar) - (yOrigine * scale) - 2)); //ASSE X
+        g1.setPaint(Color.BLUE);
     }
 
     protected void paintComponent(Graphics g) {
@@ -63,7 +66,7 @@ public class PianoCartesiano extends JPanel  {
         height = getHeight();
         scale = (double) (height - 2.0 * mar) / getMax();
         g1.drawString(Double.toString(scale), 75, 75);
-        g1.setPaint(Color.BLUE);
+        g1.setPaint(Color.BLACK);
     }
 
 
@@ -77,6 +80,25 @@ public class PianoCartesiano extends JPanel  {
             // g1.fill(new Ellipse2D.Double(x1-2,y1-2,1,1));
             g1.draw(new Line2D.Double(x1, y1, x2, y2));
         }
+    }
+    public void plotPoint(double point[][], Color color, String label) throws NullPointerException {
+        g1.setPaint(color);
+        if (point.length != 0){
+            for (int i = 0; i <= point.length - 1; i++){
+                int x1 = (int)(mar - (xOrigine * scale) + point[i][0] * scale);
+                int y1 = (int)((height - mar) - (yOrigine * scale));
+
+                g1.fillOval(x1, y1,4, 4);
+                g1.drawString(label + (i+1) +"(" + point[i][0] + ", " + point[i][1] + ");", x1 + 5, y1 + 15);
+
+                System.out.println("P(" + x1 + ", " + y1 + ");");
+            }
+        }else
+        {
+            throw new NullPointerException("Dati non corretti!");
+        }
+
+
     }
 
     private double getMax() {

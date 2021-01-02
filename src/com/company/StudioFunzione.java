@@ -41,7 +41,7 @@ public class StudioFunzione  extends PianoCartesiano{
             setxOrigine(0);
         else    
             setxOrigine(a);
-        setyOrigine(Math.abs((maxY-minY))/2.0);
+            setyOrigine(Math.abs((maxY-minY))/2.0);
         if ((b-a)>(maxY-minY))
             setMaxY(b-a);
         else
@@ -54,15 +54,15 @@ public class StudioFunzione  extends PianoCartesiano{
         super.paintComponent(g);
         g1=(Graphics2D)g;
         super.assi(g1);
-        super.plotFx(datiXY,g1) ;
+        //super.plotFx(datiXY,g1) ;
     }
     private double f(double x){
-        //return x;
-        return Math.pow(Math.sin(x),2)+Math.cos(x);
+        return Math.pow(x, 2);
+        //return Math.pow(Math.sin(x),2)+Math.pow(Math.cos(x), 3);
         //return -Math.pow(x, 3) + 6*Math.pow(x, 2) - 11 * x+6;
     }
     public void plotFx(){
         super.assi(g1);
-        super.plotFx(datiXY,g1) ;
+        //super.plotFx(datiXY,g1) ;
     }
 }

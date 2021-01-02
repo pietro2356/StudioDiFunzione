@@ -1,30 +1,25 @@
 package com.company;
 
-import java.util.Vector;
+import javax.swing.*;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-	    System.out.println("Calcolo equazione!");
-	    double[] PRIMO = new double[]{0.50, 1};
-        double[] SECONDO = new double[]{1, 5, 4};
+        double[] PRIMO = new double[]{1, 1};
+        double[] SECONDO = new double[]{4, -2, -2};
         double[] TERZO = new double[]{-1, 6, -11, 6};
+        double[] PARAMETRI = new double[]{-0, 4, 0.001};
 
-        double[] PARAMETRI = new double[]{0, 4, 0.001};
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        StudioFx st = new StudioFx(TERZO, PARAMETRI);
+        StudioFx s = new StudioFx(TERZO, PARAMETRI);
+        s.scansioneFx();
 
-        double[][] dati =  st.GetPoint();
-        double[][] root = st.GetRoot();
-
-        for (double[] item: dati) {
-            System.out.println("-> (" + item[0] + "; " + item[1] + ")");
-        }
-        for (double[] item: root) {
-            System.out.println("Xnorm -> " + item[0]);
-            System.out.println("Xapp -> " + item[1]);
-        }
-
-
+        frame.add(s);
+        frame.setSize(800,800);
+        frame.setLocation(200,200);
+        frame.setVisible(true);
+        frame.setVisible(true);
     }
 }
