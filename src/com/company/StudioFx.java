@@ -13,9 +13,9 @@ public class StudioFx extends PianoCartesiano{
     private double maxY = Double.MIN_VALUE;
 
     //* PARAMETRI ANALISI FUNZIONE *//
-    private double Piniziale = 0;
-    private double Pfinale = 4;
-    private double Intervallo = 0.001;
+    private double Piniziale;
+    private double Pfinale;
+    private double Intervallo;
 
     //* PARAMETRI FUNZIONE *//
     private double a;
@@ -86,7 +86,7 @@ public class StudioFx extends PianoCartesiano{
         switch (gradoFx){
             case PRIMO -> { return a;}
             case SECONDO -> { return 2 * a * x; }
-            case TERZO -> { return 3 * a * Math.pow(x, 2) + 2 * b * x + c;}
+            case TERZO -> { return 3 * a * x + b;}
             default -> throw new ArithmeticException();
         }
     }
@@ -151,7 +151,10 @@ public class StudioFx extends PianoCartesiano{
                 double dy = y - oy;
                 double cx = x - dx * (y / dy);
                 // [x, y]
-                root.addElement(new double[]{Double.parseDouble(String.format("%.2f", cx).replace(",",".")), 0});
+                root.addElement(new double[]{
+                        Double.parseDouble(String.format("%.2f", cx).replace(",",".")),
+                        Double.parseDouble(String.format("%.2f", f(cx)).replace(",","."))
+                });
             }
             ox = x; oy = y; os = s;
         }
@@ -189,37 +192,28 @@ public class StudioFx extends PianoCartesiano{
     //* FLESSI DELLA FUNZIONE *//
     public void GetFlex() throws Exception {
         Vector<double[]> flex = new Vector();
+        int count = 0;
 
-        double x= Piniziale,y=0;
-        int i=0;
-        double MIN = Double.MAX_VALUE;
-        double MAX = Double.MIN_VALUE;
+        double x = Piniziale, ox = x;
+        double y = F2(x), oy = y;
+        int s = sign(y), os = s;
 
-        while (x <= Pfinale){
-            y = F(x);
-            if (y < MIN){
-                MIN = y;
+        for (; x <= Pfinale ; x += Intervallo) {
+            s = sign(y = F2(x));
+            if (s == 0) {
+                System.out.println(x);
+            } else if (s != os) {
+                double dx = x - ox;
+                double dy = y - oy;
+                double cx = x - dx * (y / dy);
+                // [x, y]
+                flex.addElement(new double[]{
+                        Double.parseDouble(String.format("%.2f", cx).replace(",",".")),
+                        Double.parseDouble(String.format("%.2f", f(cx)).replace(",","."))
+                });
             }
-            if (y > MAX){
-                MAX = y;
-            }
-
-            x+= Intervallo;
-            i++;
+            ox = x; oy = y; os = s;
         }
-        ///TODO: NON VA! DA CONTROLLARE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (a > 0){
-            flex.addElement(new double[]{
-                    Double.parseDouble(String.format("%.2f", x).replace(",",".")),
-                    Double.parseDouble(String.format("%.2f", F(x)).replace(",","."))
-            });
-        } else if (a < 0) {
-            flex.addElement(new double[]{
-                    Double.parseDouble(String.format("%.2f", x).replace(",",".")),
-                    Double.parseDouble(String.format("%.2f", F(x)).replace(",","."))
-            });
-        }
-
         this.flex = flex.toArray(new double[flex.size()][2]);
     }
 
@@ -249,7 +243,7 @@ public class StudioFx extends PianoCartesiano{
         try{
             super.plotPoint(root, Color.RED, "root");
             super.plotPoint(minMax, Color.ORANGE, "mM");
-            super.plotPoint(flex, Color.MAGENTA, "flex");
+            super.plotPoint(flex, Color.PINK, "flex");
         }catch (NullPointerException ex){
             System.out.println("Alcune matrici sono vuote -> " + ex.getMessage());
         }

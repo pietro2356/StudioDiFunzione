@@ -98,8 +98,6 @@ public class PianoCartesiano extends JPanel  {
         {
             throw new NullPointerException("Dati non corretti!");
         }
-
-
     }
 
     private double getMax() {
