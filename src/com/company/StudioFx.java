@@ -82,6 +82,14 @@ public class StudioFx extends PianoCartesiano{
             default -> throw new ArithmeticException();
         }
     }
+    public double F2(double x){
+        switch (gradoFx){
+            case PRIMO -> { return a;}
+            case SECONDO -> { return 2 * a * x; }
+            case TERZO -> { return 3 * a * Math.pow(x, 2) + 2 * b * x + c;}
+            default -> throw new ArithmeticException();
+        }
+    }
 
     //* COSTRUTTORE FUNZIONE *//
     public void scansioneFx() throws Exception {
@@ -113,6 +121,7 @@ public class StudioFx extends PianoCartesiano{
 
         GetRoot();
         GetMinMax();
+        GetFlex();
     }
 
     //* SEGNO FUNZIONE *//
@@ -177,9 +186,42 @@ public class StudioFx extends PianoCartesiano{
         this.minMax = minMax.toArray(new double[minMax.size()][2]);
     }
 
-
     //* FLESSI DELLA FUNZIONE *//
-    public double[][] GetFlex() throws Exception { throw new Exception("Not Implemnted yet!"); }
+    public void GetFlex() throws Exception {
+        Vector<double[]> flex = new Vector();
+
+        double x= Piniziale,y=0;
+        int i=0;
+        double MIN = Double.MAX_VALUE;
+        double MAX = Double.MIN_VALUE;
+
+        while (x <= Pfinale){
+            y = F(x);
+            if (y < MIN){
+                MIN = y;
+            }
+            if (y > MAX){
+                MAX = y;
+            }
+
+            x+= Intervallo;
+            i++;
+        }
+        ///TODO: NON VA! DA CONTROLLARE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if (a > 0){
+            flex.addElement(new double[]{
+                    Double.parseDouble(String.format("%.2f", x).replace(",",".")),
+                    Double.parseDouble(String.format("%.2f", F(x)).replace(",","."))
+            });
+        } else if (a < 0) {
+            flex.addElement(new double[]{
+                    Double.parseDouble(String.format("%.2f", x).replace(",",".")),
+                    Double.parseDouble(String.format("%.2f", F(x)).replace(",","."))
+            });
+        }
+
+        this.flex = flex.toArray(new double[flex.size()][2]);
+    }
 
 
     //** PARTE DI GRAFICA **//
