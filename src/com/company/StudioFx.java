@@ -1,7 +1,6 @@
 package com.company;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.Vector;
 
 public class StudioFx extends PianoCartesiano{
@@ -127,10 +126,11 @@ public class StudioFx extends PianoCartesiano{
         else
             setMaxY(maxY - minY);
 
-        GetRoot();
-        GetMinMax();
-        GetFlex();
+        Root();
+        MinMax();
+        Flex();
     }
+
 
     //* SEGNO FUNZIONE *//
     private static int sign(double x) {
@@ -140,9 +140,8 @@ public class StudioFx extends PianoCartesiano{
             return 1;
         }else{ return 0;}
     }
-
     //* ZERI DELLA FUNZIONE *//
-    private void GetRoot(){
+    private void Root(){
         Vector<double[]> root = new Vector();
 
         double x = Piniziale;
@@ -175,9 +174,8 @@ public class StudioFx extends PianoCartesiano{
 
         this.root = root.toArray(new double[root.size()][2]);
     }
-
     //* MINIMI E MASIMI DELLA FUNZIONE *//
-    private void GetMinMax() throws NullPointerException {
+    private void MinMax() throws NullPointerException {
         Vector<double[]> minMax = new Vector();
 
         double x = Piniziale;
@@ -211,9 +209,8 @@ public class StudioFx extends PianoCartesiano{
 
         this.minMax = minMax.toArray(new double[minMax.size()][2]);
     }
-
     //* FLESSI DELLA FUNZIONE *//
-    private void GetFlex() throws NullPointerException {
+    private void Flex() throws NullPointerException {
         Vector<double[]> flex = new Vector();
 
         double x = Piniziale;
@@ -247,10 +244,17 @@ public class StudioFx extends PianoCartesiano{
         this.flex = flex.toArray(new double[flex.size()][2]);
     }
 
+    //* OUT DATI *//
+    public double[][] getFlex() { return flex; }
+    public double[][] getRoot() { return root; }
+    public double[][] getMinMax() { return minMax; }
+
+
     //** PARTE DI GRAFICA **//
     private void assi(){
         super.assi(g1);
     }
+    
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
         g1=(Graphics2D)g;
