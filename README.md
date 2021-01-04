@@ -14,7 +14,7 @@ Il programma consente di realizzare uno studio di funzione!
 ### Funzionamento
 Per usare il programma vi basterà inserire i vari parametri della funzione: [es]
 ```
--x^3 + 6x^2 -11x + 6 = 0
+f(x) = -x^3 + 6x^2 -11x + 6
 param:
     a -> -1
     b -> 6
@@ -41,7 +41,8 @@ I  -> 0,001  --> Intervallo di analisi.
 
 ## Autori
 
-* **Rocchio Pietro** - :fire_engine:
+* **Pietro Rocchio** - :fire_engine:
+* **Mattia Varagone** - :fire_engine:
 
 ## Licenza
 
