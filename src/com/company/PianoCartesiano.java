@@ -15,7 +15,7 @@ import java.awt.event.MouseEvent;
 import java.io.Console;
 import java.io.IOException;
 
-public class PianoCartesiano extends JPanel  {
+class PianoCartesiano extends JPanel  {
 
     double xOrigine = 0, yOrigine = 0;
     double scale = 1, maxY = 0;
@@ -90,8 +90,6 @@ public class PianoCartesiano extends JPanel  {
 
                 g1.fillOval(x1, y1,4, 4);
                 g1.drawString(label + (i+1) +"(" + point[i][0] + ", " + point[i][1] + ");", x1 + 5, y1 + 15);
-
-                System.out.println("P(" + x1 + ", " + y1 + ");");
             }
         }else {
             throw new NullPointerException("Dati non corretti!");
