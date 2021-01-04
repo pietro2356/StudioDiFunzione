@@ -1,22 +1,5 @@
 # Studio di funzione in Java
-Il programma consente di realizzare studi di funzioni.
-
-## Avvertenze
-**Il programma non è ancora ultimato, pertanto non è ancora del tutto funzionante!**\
-Potete visionare qui il [CHANGELOG](CHANGELOG.md) dove vi sono notificate le funzioni operative e non.
-
-### Funzionamento
-Per usare il programma vi basterà inserire la vostra funzione:
-```
--x^3 + 6x^2 -11x +6 = 0
-```
-Ed inserire un range a, b:
-```
-[a, b]
-```
-
-**Fatto ciò il programma mostrerà una finestra con tutti i relativi dati della funzione.**
-
+Il programma consente di realizzare uno studio di funzione!
 
 ### Cosa si può fare
 * Calcolo degli **zeri** in un intervallo *[a, b]*.
@@ -27,6 +10,34 @@ Ed inserire un range a, b:
     * Zeri della funzione
     * Punti di massimo e di minimo.
     * Punti di flesso.
+
+### Funzionamento
+Per usare il programma vi basterà inserire i vari parametri della funzione: [es]
+```
+-x^3 + 6x^2 -11x + 6 = 0
+param:
+    a -> -1
+    b -> 6
+    c -> -11
+    d -> 6
+```
+
+Ed inserire un range ***Pi, Pf***, ed un intrervallo di analisi ***I***:
+```
+Pi -> 0      --> Punto iniziale di analisi.
+Pf -> 4      --> Punto finale di analisi.
+I  -> 0,001  --> Intervallo di analisi.
+```
+
+**Fatto ciò il programma mostrerà:**
+* Via CLI:
+    * Riassunto dei vari punti:
+        * Zeri.
+        * Minimi e Massimi.
+        * Flessi.
+* Via GUI:
+    * Finestra con grafico e vari punti sopra citati!
+
 
 ## Autori
 
