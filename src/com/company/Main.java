@@ -12,7 +12,7 @@ public class Main {
         Scanner in = new Scanner (System.in);
         double a;
         double b;
-         double c;
+        double c;
         double d;
         double Pi = 0;
         double Pf = 0;
@@ -28,55 +28,62 @@ public class Main {
         System.out.println("##########################################");
         System.out.println("");
 
-        try{
-            System.out.print("Di che grado è l'equazione da analizzare? [1, 3] -> ");
-            switch (in.nextInt()) {
-                case 1 -> {
-                    System.out.println("\nL'equazione si presenterà nella forma -> ax + b = 0");
-                    System.out.print("Inserisci il parametro a -> ");
-                    a = in.nextDouble();
-                    System.out.print("Inserisci il parametro b -> ");
-                    b = in.nextDouble();
-                    f = new double[]{a, b};
-                }
-                case 2 -> {
-                    System.out.println("\nL'equazione si presenterà nella forma -> ax^2 + bx + c = 0");
-                    System.out.print("Inserisci il parametro a -> ");
-                    a = in.nextDouble();
-                    System.out.print("Inserisci il parametro b -> ");
-                    b = in.nextDouble();
-                    System.out.print("Inserisci il parametro c -> ");
-                    c = in.nextDouble();
+        while (!fine){
+            try{
+                System.out.print("Di che grado è l'equazione da analizzare? [1, 3] -> ");
+                switch (in.nextInt()) {
+                    case 1 -> {
+                        System.out.println("\nL'equazione si presenterà nella forma -> ax + b = 0");
+                        System.out.print("Inserisci il parametro a -> ");
+                        a = in.nextDouble();
+                        System.out.print("Inserisci il parametro b -> ");
+                        b = in.nextDouble();
 
-                    f = new double[]{a, b, c};
-                }
-                case 3 -> {
-                    System.out.println("\nL'equazione si presenterà nella forma -> ax^3 + bx^2 + cx + d = 0");
-                    System.out.print("Inserisci il parametro a -> ");
-                    a = in.nextDouble();
-                    System.out.print("Inserisci il parametro b -> ");
-                    b = in.nextDouble();
-                    System.out.print("Inserisci il parametro c -> ");
-                    c = in.nextDouble();
-                    System.out.print("Inserisci il parametro d -> ");
-                    d = in.nextDouble();
+                        f = new double[]{a, b};
+                    }
+                    case 2 -> {
+                        System.out.println("\nL'equazione si presenterà nella forma -> ax^2 + bx + c = 0");
+                        System.out.print("Inserisci il parametro a -> ");
+                        a = in.nextDouble();
+                        System.out.print("Inserisci il parametro b -> ");
+                        b = in.nextDouble();
+                        System.out.print("Inserisci il parametro c -> ");
+                        c = in.nextDouble();
 
-                    f = new double[]{a, b, c, d};
+                        f = new double[]{a, b, c};
+                    }
+                    case 3 -> {
+                        System.out.println("\nL'equazione si presenterà nella forma -> ax^3 + bx^2 + cx + d = 0");
+                        System.out.print("Inserisci il parametro a -> ");
+                        a = in.nextDouble();
+                        System.out.print("Inserisci il parametro b -> ");
+                        b = in.nextDouble();
+                        System.out.print("Inserisci il parametro c -> ");
+                        c = in.nextDouble();
+                        System.out.print("Inserisci il parametro d -> ");
+                        d = in.nextDouble();
+
+                        f = new double[]{a, b, c, d};
+                    }
+                    default -> {
+                        throw new Exception("Grado dell'equazioen non corretto!");
+                    }
                 }
-                default -> {
-                    throw new Exception("Grado dell'equazioen non corretto!");
-                }
+                System.out.print("Inserisci il valore iniziale per l'analisi -> ");
+                Pi = in.nextDouble();
+
+                System.out.print("Inserisci il valore finale per l'analisi -> ");
+                Pf = in.nextDouble();
+
+                System.out.print("Inserisci l'intervallo per l'analisi -> [per i decimali usare la virgola -> 2,4] --> ");
+                I = in.nextDouble();
+
+                fine = true;
+
+            }catch (Exception ex){
+                System.out.println("Exception -> " + ex.getMessage());
+                System.out.println("Inserire un valore valido...\n");
             }
-            System.out.print("Inserisci il valore iniziale per l'analisi -> ");
-            Pi = in.nextDouble();
-
-            System.out.print("Inserisci il valore finale per l'analisi -> ");
-            Pf = in.nextDouble();
-
-            System.out.print("Inserisci l'intervallo per l'analisi -> [per i decimali usare la virgola -> 2,4]");
-            I = in.nextDouble();
-        }catch (Exception ex){
-            System.err.println(ex.getMessage());
         }
 
 
@@ -111,13 +118,5 @@ public class Main {
             System.out.println("-> (" + item[0] + ", " + item[1] + ")");
         }
 
-    }
-
-    public static void DataInput() throws Exception {
-        try{
-
-        }catch (Exception ex){
-            throw new Exception(ex.getMessage());
-        }
     }
 }
